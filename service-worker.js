@@ -22,17 +22,17 @@ self.addEventListener("install", (e) => {
 });
 
 self.addEventListener("fetch", (e) => {
-    if(!e.request.url.startWith("http")){return ;}
+    if(!e.request.url.startsWith("http")){return;}
     e.respondWith(
             fetch(e.request).then(async(response) => {
                 const cache = await caches.open(cacheName);
                 console.log(`[Service Worker] Fetched from network, caching new ressource: ${e.request.url}`);
                 cache.put(e.request, response.clone());
                 return response;
-            }).catch(async () => {
+            })
+            .catch(async () => {
                 const r = await caches.match(e.request);
                 console.log(`[Service Worker] Fetching resource from cache: ${e.request.url}`);
                 return r;
             }))
 });
-  
